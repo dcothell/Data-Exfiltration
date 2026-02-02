@@ -1,20 +1,21 @@
-# 🛡️ Suspected Data Exfiltration from PIP’d Employee
+# 🛡️ Suspected Data Exfiltration from a PIP’d Employee  
+**Tooling:** Microsoft Defender for Endpoint (Advanced Hunting)
 
 ---
 
-## 📌 Overview
+## 📌 Scenario Overview
 
-This scenario simulates a **suspected insider threat** involving an employee placed on a Performance Improvement Plan (PIP). Management raised concerns that the employee may attempt to **archive and exfiltrate sensitive data** prior to leaving the organization.
+This scenario simulates a **suspected insider threat** involving an employee placed on a **Performance Improvement Plan (PIP)**. Following a behavioral incident, management raised concerns that the employee may attempt to **archive and exfiltrate sensitive company data** prior to leaving the organization.
 
-The investigation was conducted using **Microsoft Defender for Endpoint (MDE) Advanced Hunting**, focusing on endpoint, process, file, and network telemetry.
+The goal of this investigation was to determine whether any **user-driven archive or data exfiltration activity** occurred on the employee’s corporate endpoint using **Microsoft Defender for Endpoint (MDE) Advanced Hunting**.
 
 ---
 
 ## 🎯 Objectives
 
-- Identify potential archive/compression activity
-- Determine whether activity was **user-driven or system-generated**
-- Correlate file, process, and network events
+- Identify archive or compression activity on the endpoint
+- Determine whether the activity was **user-driven or system-generated**
+- Correlate file, process, and network telemetry
 - Identify any evidence of data exfiltration
 - Document findings and recommend improvements
 
@@ -23,9 +24,9 @@ The investigation was conducted using **Microsoft Defender for Endpoint (MDE) Ad
 ## 🧪 Environment
 
 - **Platform:** Microsoft Azure Virtual Machine  
-- **Endpoint:** `windows-target-`  
-- **Tooling:** Microsoft Defender for Endpoint (Advanced Hunting)  
-- **Relevant Tables:**
+- **Endpoint Name:** `windows-target-1`  
+- **Security Tool:** Microsoft Defender for Endpoint  
+- **Advanced Hunting Tables Used:**
   - `DeviceProcessEvents`
   - `DeviceFileEvents`
   - `DeviceNetworkEvents`
@@ -34,16 +35,31 @@ The investigation was conducted using **Microsoft Defender for Endpoint (MDE) Ad
 
 ## 🧠 Hypothesis
 
-> The employee may attempt to compress sensitive data using archive utilities (e.g., 7-Zip) and exfiltrate the data to an external location.
+> Because the employee had administrative access and no application restrictions, it was hypothesized that the employee may attempt to compress sensitive data using archive utilities (e.g., 7-Zip) and exfiltrate it from the corporate environment.
 
 ---
 
-## 🔍 Investigation & Analysis
+## 🔍 Investigation Methodology
+
+The investigation followed a structured threat-hunting approach:
+
+1. Identify potential archive activity
+2. Correlate file creation events
+3. Perform time-based process correlation
+4. Analyze network activity for exfiltration
+5. Validate findings and rule out false positives
+6. Document results and propose improvements
+
+---
+
+## 🔎 Advanced Hunting Queries & Findings
+
+---
 
 ### 1️⃣ Archive Utility Detection
 
 **Purpose:**  
-Identify execution of common archive/compression utilities.
+Identify execution of common archive and compression utilities that could be used to stage data for exfiltration.
 
 ```kql
 let archive_applications = dynamic([
