@@ -178,5 +178,3 @@ No evidence of data exfiltration or malicious insider activity was identified du
 * Clear documentation strengthens incident response maturity
 
 ---
-
-```
